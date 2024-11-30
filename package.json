@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "vue-router": "^4.5.0"
+  }
+}
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+createApp(App).use(router).mount('#app');
+  "scripts": {
+  "deploy": "vue-cli-service build --dest dist && gh-pages -d dist",
+  "predeploy": "npm run build"
+}
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? '/<NOMBRE_DEL_REPOSITORIO>/' : '/',
+};
+  

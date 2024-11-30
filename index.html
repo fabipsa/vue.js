@@ -1,0 +1,121 @@
+<template>
+    <div class="home">
+      <h1>Gestor de Tareas</h1>
+      <p>Bienvenido al Gestor de Tareas. Puedes agregar tareas, ver tareas existentes, y más.</p>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    name: 'HomeView',
+  };
+  </script>
+  
+  <style scoped>
+  .home {
+    text-align: center;
+  }
+  </style>
+
+<template>
+    <div class="add-task">
+      <h2>Agregar Nueva Tarea</h2>
+      <form @submit.prevent="addTask">
+        <input v-model="newTask" type="text" placeholder="Ingresa una tarea" required />
+        <button type="submit" class="btn btn-primary">Agregar</button>
+      </form>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        newTask: '',
+      };
+    },
+    methods: {
+      addTask() {
+        this.$emit('taskAdded', this.newTask);
+        this.newTask = ''; // Limpiar el campo de entrada
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .add-task {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  </style>
+<template>
+    <div class="task-list">
+      <h2>Tareas desde la API</h2>
+      <ul>
+        <li v-for="task in tasks" :key="task.id">{{ task.title }}</li>
+      </ul>
+      <button @click="fetchTasks" class="btn btn-secondary">Cargar Tareas</button>
+    </div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        tasks: [],
+      };
+    },
+    methods: {
+      fetchTasks() {
+        axios.get('https://dummyjson.com/todos')
+          .then(response => {
+            this.tasks = response.data.todos;
+          })
+          .catch(error => {
+            console.error('Error al obtener tareas:', error);
+          });
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .task-list {
+    text-align: center;
+  }
+  </style>
+<template>
+    <div class="combined-view">
+      <h2>Gestor de Tareas Completo</h2>
+      <AddTask @taskAdded="addTask" />
+      <TaskList />
+    </div>
+  </template>
+  
+  <script>
+  import AddTask from './AddTask.vue';
+  import TaskList from './TaskList.vue';
+  
+  export default {
+    components: {
+      AddTask,
+      TaskList,
+    },
+    methods: {
+      addTask(task) {
+        // Lógica para agregar la tarea manualmente
+        console.log('Tarea añadida:', task);
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .combined-view {
+    text-align: center;
+  }
+  </style>
+      
